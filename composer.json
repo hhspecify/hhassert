@@ -1,0 +1,22 @@
+{
+  "name": "hhspecify/hhassert",
+  "type": "library",
+  "keywords": [ "hack", "hhvm", "spec", "test", "assert" ],
+  "description": "",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "holyshared",
+      "email": "holy.shared.design@gmail.com"
+    }
+  ],
+  "require": {
+    "hhvm": ">=3.5.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "hhassert\\": "src"
+    },
+    "files": [ "src/bootstrap.hh" ]
+  }
+}
