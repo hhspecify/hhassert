@@ -10,10 +10,12 @@ class Assert
 
     protected static ?FailedSubscriber $subscriber;
 
-    public static function ok<Ta>(Ta $value) : void
+    public static function ok<Ta>(Ta $actual) : void
     {
-        if ($value !== true) {
-            throw new AssertionFailedException("Not ok");
+        try {
+            EqualMatcher::of($actual)->match(true);
+        } catch (AssertionFailedException $exception) {
+            $exception->sendTo(self::failedSubscriber());
         }
     }
 
