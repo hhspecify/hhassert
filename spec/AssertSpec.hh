@@ -2,6 +2,7 @@
 
 use hhassert\Assert;
 use hhassert\AssertionFailedException;
+use hhassert\ContextBuilder;
 use \Exception;
 use \InvalidArgumentException;
 
@@ -38,6 +39,24 @@ describe(Assert::class, function() {
             it('throw exception', function() {
                 expect(() ==> {
                     Assert::throws(() ==> new Exception("failed"), InvalidArgumentException::class);
+                })->toThrow(AssertionFailedException::class);
+            });
+        });
+    });
+    describe('configure', function() {
+        context('when register custom matcher', function() {
+            beforeEach(function() {
+                Assert::configure((ContextBuilder $builder) ==> {
+
+                    $builder->registerMatcher('test', (...) ==> {
+                        throw new AssertionFailedException("custom matcher");
+                    });
+
+                });
+            });
+            it('delegate to custom matcher', function() {
+                expect(() ==> {
+                    Assert::test();
                 })->toThrow(AssertionFailedException::class);
             });
         });
