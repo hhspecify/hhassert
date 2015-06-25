@@ -8,14 +8,21 @@ use hhassert\matcher\EqualMatcher;
 class Assert
 {
 
-    protected static ?FailedSubscriber $subscriber;
+    protected static ?Context $context;
+
+    public static function configure(Configurator $configurator) : void
+    {
+        self::$context = ContextBuilder::create()
+            ->applyTo($configurator)
+            ->build();
+    }
 
     public static function ok<Ta>(Ta $actual) : void
     {
         try {
             EqualMatcher::of($actual)->match(true);
         } catch (AssertionFailedException $exception) {
-            $exception->sendTo(self::failedSubscriber());
+            self::context()->reportFailedReason($exception);
         }
     }
 
@@ -24,13 +31,16 @@ class Assert
         try {
             EqualMatcher::of($actual)->match($expected);
         } catch (AssertionFailedException $exception) {
-            $exception->sendTo(self::failedSubscriber());
+            self::context()->reportFailedReason($exception);
         }
     }
 
-    private static function failedSubscriber() : FailedSubscriber
+    public static function context() : Context
     {
-        return self::$subscriber !== null ? self::$subscriber : new FailedExceptionThrower();
+        if (self::$context === null) {
+            self::$context = ContextBuilder::create()->build();
+        }
+        return self::$context;
     }
 
 }
