@@ -12,4 +12,9 @@ final class AssertionFailedException extends Exception
         parent::__construct($message, $code, $previous);
     }
 
+    public function sendTo(FailedSubscriber $subscriber) : void
+    {
+        $subscriber->receive($this);
+    }
+
 }

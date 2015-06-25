@@ -1,5 +1,6 @@
 <?hh //partial
 
+use hhassert\AssertionFailedException;
 use hhassert\matcher\EqualMatcher;
 
 describe(EqualMatcher::class, function() {
@@ -8,8 +9,9 @@ describe(EqualMatcher::class, function() {
             beforeEach(function() {
                 $this->matcher = new EqualMatcher("foo");
             });
-            it('returns true', function() {
-                expect($this->matcher->match("foo"))->toBeTrue();
+            it('not thrown assertion exception', function() {
+                expect(() ==> $this->matcher->match("foo"))
+                    ->not()->toThrow(AssertionFailedException::class);
             });
         });
     });

@@ -8,6 +8,8 @@ use hhassert\matcher\EqualMatcher;
 class Assert
 {
 
+    protected static ?FailedSubscriber $subscriber;
+
     public static function ok<Ta>(Ta $value) : void
     {
         if ($value !== true) {
@@ -17,13 +19,16 @@ class Assert
 
     public static function equal<Ta, Te>(Ta $actual, Te $expected) : void
     {
-        $matcher = new EqualMatcher($actual);
-
-        if ($matcher->match($expected)) {
-            return;
+        try {
+            EqualMatcher::of($actual)->match($expected);
+        } catch (AssertionFailedException $exception) {
+            $exception->sendTo(self::failedSubscriber());
         }
+    }
 
-        $matcher->throwFailedException();
+    private static function failedSubscriber() : FailedSubscriber
+    {
+        return self::$subscriber !== null ? self::$subscriber : new FailedExceptionThrower();
     }
 
 }
