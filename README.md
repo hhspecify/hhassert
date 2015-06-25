@@ -31,6 +31,28 @@ Assert::throws(() ==> {
 }, InvalidArgumentException::class);
 ```
 
+Custom matcher
+----------------------------------------------
+
+You can be the registration of the matcher in the **configure method**.
+Matcher specified in the lambda expression.
+
+```hack
+Assert::configure((ContextBuilder $builder) ==> {
+
+    $builder->registerMatcher('custom_matcher', (...) ==> {
+        list($a, $b) = func_get_args();
+
+        if ($a !== $b) {
+            throw new AssertionFailedException("custom matcher");
+        }
+    });
+
+});
+
+Assert::custom_matcher("a", "b");
+```
+
 Run the test
 ----------------------------------------------
 

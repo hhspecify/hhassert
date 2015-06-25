@@ -1,11 +1,19 @@
 <?hh //strict
 
+/**
+ * This file is part of hhassert.
+ *
+ * (c) Noritaka Horio <holy.shared.design@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace hhassert;
 
 use hhassert\matcher\EqualMatcher;
 use hhassert\matcher\NotEqualMatcher;
 use hhassert\matcher\ThrowsMatcher;
-
 
 class Assert
 {
@@ -61,6 +69,20 @@ class Assert
             self::$context = ContextBuilder::create()->build();
         }
         return self::$context;
+    }
+
+    public static function __callStatic(string $key, array<mixed> $args) : void
+    {
+        if (method_exists(self::class, $key)) {
+            call_user_func_array([ self::class, $key ], $args);
+            return;
+        }
+
+        try {
+            self::context()->delegate($key, $args);
+        } catch (AssertionFailedException $exception) {
+            self::context()->reportFailedReason($exception);
+        }
     }
 
 }
