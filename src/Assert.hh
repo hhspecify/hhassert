@@ -3,6 +3,7 @@
 namespace hhassert;
 
 use hhassert\matcher\EqualMatcher;
+use hhassert\matcher\NotEqualMatcher;
 use hhassert\matcher\ThrowsMatcher;
 
 
@@ -31,6 +32,15 @@ class Assert
     {
         try {
             EqualMatcher::of($actual)->match($expected);
+        } catch (AssertionFailedException $exception) {
+            self::context()->reportFailedReason($exception);
+        }
+    }
+
+    public static function notEqual<Ta, Te>(Ta $actual, Te $expected) : void
+    {
+        try {
+            NotEqualMatcher::of($actual)->match($expected);
         } catch (AssertionFailedException $exception) {
             self::context()->reportFailedReason($exception);
         }

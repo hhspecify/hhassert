@@ -24,8 +24,17 @@ describe(Assert::class, function() {
             });
         });
     });
+    describe('notEqual', function() {
+        context('when same value', function() {
+            it('throw exception', function() {
+                expect(() ==> {
+                    Assert::notEqual("1", "1");
+                })->toThrow(AssertionFailedException::class);
+            });
+        });
+    });
     describe('throws', function() {
-        context('when not same value', function() {
+        context('when not throw exception', function() {
             it('throw exception', function() {
                 expect(() ==> {
                     Assert::throws(() ==> new Exception("failed"), InvalidArgumentException::class);
