@@ -6,7 +6,8 @@ class ContextBuilder
 {
 
     public function __construct(
-        private FailedSubscriber $reporter
+        private FailedSubscriber $reporter,
+        private MatcherRegistry $matchers
     )
     {
     }
@@ -14,13 +15,20 @@ class ContextBuilder
     public static function create() : ContextBuilder
     {
         return new ContextBuilder(
-            new FailedExceptionThrower()
+            new FailedExceptionThrower(),
+            Map {}
         );
     }
 
     public function applyTo(Configurator $configurator) : this
     {
         $configurator($this);
+        return $this;
+    }
+
+    public function registerMatcher(string $key, MatcherCallback $matcher) : this
+    {
+        $this->matchers->set($key, $matcher);
         return $this;
     }
 
@@ -32,7 +40,7 @@ class ContextBuilder
 
     public function build() : Context
     {
-        return new AssertContext($this->reporter);
+        return new AssertContext($this->reporter, $this->matchers);
     }
 
 }

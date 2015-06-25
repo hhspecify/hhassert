@@ -6,7 +6,6 @@ use hhassert\matcher\EqualMatcher;
 use hhassert\matcher\NotEqualMatcher;
 use hhassert\matcher\ThrowsMatcher;
 
-
 class Assert
 {
 
@@ -61,6 +60,15 @@ class Assert
             self::$context = ContextBuilder::create()->build();
         }
         return self::$context;
+    }
+
+    public static function __callStatic(string $key, array<mixed> $args) : mixed
+    {
+        if (method_exists(self::class, $key)) {
+            return call_user_func_array([ self::class, $key ], $args);
+        }
+
+        return self::context()->delegate($key, $args);
     }
 
 }
