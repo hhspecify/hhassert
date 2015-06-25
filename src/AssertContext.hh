@@ -12,10 +12,10 @@ class AssertContext implements Context
     {
     }
 
-    public function delegate(string $key, array<mixed> $args) : mixed
+    public function delegate(string $key, array<mixed> $args) : void
     {
         $matcher = $this->registry->at($key);
-        return call_user_func_array($matcher, $args);
+        call_user_func_array($matcher, $args);
     }
 
     public function reportFailedReason(AssertionFailedException $exception) : void

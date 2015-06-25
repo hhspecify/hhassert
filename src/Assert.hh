@@ -62,13 +62,18 @@ class Assert
         return self::$context;
     }
 
-    public static function __callStatic(string $key, array<mixed> $args) : mixed
+    public static function __callStatic(string $key, array<mixed> $args) : void
     {
         if (method_exists(self::class, $key)) {
-            return call_user_func_array([ self::class, $key ], $args);
+            call_user_func_array([ self::class, $key ], $args);
+            return;
         }
 
-        return self::context()->delegate($key, $args);
+        try {
+            self::context()->delegate($key, $args);
+        } catch (AssertionFailedException $exception) {
+            self::context()->reportFailedReason($exception);
+        }
     }
 
 }
