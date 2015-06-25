@@ -1,7 +1,7 @@
 hhassert
 ==============================================
 
-**hhassert** is simple assertion library for [Hack](http://hacklang.org/).
+**hhassert** is simple assertion library for [Hack](http://hacklang.org/).  
 You can use easily as assert module of nodejs.
 
 [![Build Status](https://travis-ci.org/hhspecify/hhassert.svg?branch=master)](https://travis-ci.org/hhspecify/hhassert)
@@ -33,5 +33,5 @@ Assert::throws(() ==> {
 Run the test
 ----------------------------------------------
 
-composer install
-composer test
+	composer install
+	composer test
