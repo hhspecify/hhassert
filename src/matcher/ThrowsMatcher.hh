@@ -45,8 +45,14 @@ class ThrowsMatcher implements Matcher
 
     private function throwFailedException() : void
     {
-        $actual = Value::of($this->actual);
-        $expected = Value::of($this->expected);
+        $actual = null;
+
+        if ($this->actual !== null) {
+            $actual = get_class($this->actual);
+        }
+
+        $actual = Value::of($actual)->unwrap();
+        $expected = Value::of($this->expected)->unwrap();
 
 $failedMessage = <<<MSG
 
