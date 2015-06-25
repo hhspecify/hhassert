@@ -1,8 +1,8 @@
 {
   "name": "hhspecify/hhassert",
   "type": "library",
-  "keywords": [ "hack", "hhvm", "spec", "test", "assert" ],
-  "description": "",
+  "keywords": [ "hack", "hhvm", "spec", "test", "assert", "simple" ],
+  "description": "Simple assertion library for Hack",
   "license": "MIT",
   "authors": [
     {
