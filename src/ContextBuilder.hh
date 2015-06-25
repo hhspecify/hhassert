@@ -24,6 +24,12 @@ class ContextBuilder
         return $this;
     }
 
+    public function failedReporter(FailedSubscriber $reporter) : this
+    {
+        $this->reporter = $reporter;
+        return $this;
+    }
+
     public function build() : Context
     {
         return new AssertContext($this->reporter);
