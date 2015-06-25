@@ -5,19 +5,19 @@ namespace hhassert\matcher;
 use hhassert\Matcher;
 use hhassert\AssertionFailedException;
 
-class EqualMatcher implements Matcher
+class EqualMatcher<Ta> implements Matcher
 {
 
     private mixed $expected;
 
     public function __construct(
-        private mixed $actual
+        private Ta $actual
     )
     {
         $this->expected = null;
     }
 
-    public static function of(mixed $actual) : EqualMatcher
+    public static function of(Ta $actual) : EqualMatcher<Ta>
     {
         return new self($actual);
     }
@@ -25,7 +25,7 @@ class EqualMatcher implements Matcher
     /**
      * <code>
      * $matcher = new EqualMatcher("foo");
-     * $matcher->match("bar") //return false;
+     * $matcher->match("bar");
      * </code>
      */
     public function match<To>(To $other) : void
