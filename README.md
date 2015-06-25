@@ -5,6 +5,7 @@ hhassert
 You can use easily as assert module of nodejs.
 
 [![Build Status](https://travis-ci.org/hhspecify/hhassert.svg?branch=master)](https://travis-ci.org/hhspecify/hhassert)
+[![Dependency Status](https://www.versioneye.com/user/projects/558b9e303632320021000001/badge.svg?style=flat)](https://www.versioneye.com/user/projects/558b9e303632320021000001)
 
 Basic Usage
 ----------------------------------------------
