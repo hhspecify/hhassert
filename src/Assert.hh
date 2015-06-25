@@ -3,6 +3,7 @@
 namespace hhassert;
 
 use hhassert\matcher\EqualMatcher;
+use hhassert\matcher\ThrowsMatcher;
 
 
 class Assert
@@ -30,6 +31,15 @@ class Assert
     {
         try {
             EqualMatcher::of($actual)->match($expected);
+        } catch (AssertionFailedException $exception) {
+            self::context()->reportFailedReason($exception);
+        }
+    }
+
+    public static function throws(ThrowsCallback $callback, string $exceptionType) : void
+    {
+        try {
+            ThrowsMatcher::of($callback)->match($exceptionType);
         } catch (AssertionFailedException $exception) {
             self::context()->reportFailedReason($exception);
         }
