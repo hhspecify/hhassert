@@ -3,14 +3,19 @@
 namespace hhassert\matcher;
 
 use hhassert\Matcher;
+use hhassert\ExceptionThrower;
+use hhassert\AssertionFailedException;
 
-class EqualMatcher<Ta> implements Matcher
+class EqualMatcher implements Matcher, ExceptionThrower
 {
 
+    private mixed $expected;
+
     public function __construct(
-        private Ta $actual
+        private mixed $actual
     )
     {
+        $this->expected = null;
     }
 
     /**
@@ -21,7 +26,27 @@ class EqualMatcher<Ta> implements Matcher
      */
     public function match<To>(To $other) : bool
     {
-        return $this->actual === $other;
+        $this->expected = $other;
+        return $this->actual === $this->expected;
+    }
+
+    public function throwFailedException() : void
+    {
+        $actual = Value::of($this->actual);
+        $expected = Value::of($this->expected);
+
+$failedMessage = <<<MSG
+
+
+AssertionError: $actual === $expected
+
+    expected: $expected
+         got: $actual
+
+
+MSG;
+
+        throw new AssertionFailedException($failedMessage);
     }
 
 }

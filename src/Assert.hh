@@ -2,6 +2,9 @@
 
 namespace hhassert;
 
+use hhassert\matcher\EqualMatcher;
+
+
 class Assert
 {
 
@@ -14,9 +17,13 @@ class Assert
 
     public static function equal<Ta, Te>(Ta $actual, Te $expected) : void
     {
-        if ($actual !== $expected) {
-            throw new AssertionFailedException("not equal");
+        $matcher = new EqualMatcher($actual);
+
+        if ($matcher->match($expected)) {
+            return;
         }
+
+        $matcher->throwFailedException();
     }
 
 }
